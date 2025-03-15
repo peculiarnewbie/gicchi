@@ -1,0 +1,213 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { XMLParser } from "fast-xml-parser";
+import "../styles/global.css";
+
+export const prerender = false;
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const videosRes = await fetch(
+    "https://www.youtube.com/feeds/videos.xml?channel_id=UCqCKVXkLaF23tFowULXuLdQ",
+    {
+        headers: {
+            Accept: "application/json",
+        },
+    }
+);
+const videosXml = await videosRes.text();
+const parser = new XMLParser();
+const videos = parser.parse(videosXml);
+const newestVideoId = videos.feed.entry[0]["yt:videoId"];
+---
+
+<Layout>
+    <main class="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50">
+        <div class="container">
+            <div class="flex justify-center">
+                <div>
+                    {/* Hero Section */}
+                    <section class="w-full py-16 md:py-20 lg:py-28">
+                        <div class="container mx-auto px-4 md:px-6">
+                            <div
+                                class="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center"
+                            >
+                                <div class="space-y-6 relative">
+                                    <div
+                                        class="flex flex-col items-center lg:items-start space-y-4"
+                                    >
+                                        <h1
+                                            class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl py-2 lg:py-0 bg-clip-text text-transparent bg-gradient-to-r to-amber-300 from-orange-500"
+                                        >
+                                            Singer & Voice Actor
+                                        </h1>
+                                        <p
+                                            class="text-xl text-amber-900/70 max-w-[600px]"
+                                        >
+                                            Bringing characters to life and
+                                            melodies to heart 🎙️
+                                        </p>
+                                        <div
+                                            class="rounded-xl overflow-hidden sm:h-[270px] sm:w-[480px] h-[180px] w-[320px]"
+                                        >
+                                            <iframe
+                                                id="newest-video"
+                                                height="100%"
+                                                width="100%"
+                                                src=`https://www.youtube.com/embed/${newestVideoId}`
+                                                title="YouTube video player"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
+                                                allowfullscreen
+                                            >
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mx-auto lg:ml-auto relative order-first lg:order-none"
+                                >
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-r from-amber-300 to-orange-600 rounded-full blur-3xl opacity-20 animate-pulse"
+                                    >
+                                    </div>
+                                    <div
+                                        class="relative w-[300px] h-[400px] sm:w-[400px] sm:h-[500px] overflow-hidden rounded-3xl transform rotate-2 shadow-2xl border-4 border-white"
+                                    >
+                                        <img
+                                            src="/public/gicchi_hero.webp"
+                                            alt="Melody Harper"
+                                            class="object-cover"
+                                        />
+                                    </div>
+                                    <div
+                                        class="absolute -bottom-6 -right-6 bg-white p-4 rounded-full shadow-lg transform -rotate-6"
+                                    >
+                                        <!-- <Music class="h-8 w-8 text-purple-500" /> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Services Section */}
+                    <section id="services" class="w-full py-8 md:py-12">
+                        <div class="container mx-auto px-4 md:px-6">
+                            <div
+                                class="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+                            >
+                                <h2
+                                    class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r to-amber-300 from-orange-500"
+                                >
+                                    Where to find me
+                                </h2>
+                                <p
+                                    class="max-w-[700px] text-amber-900/70 text-xl"
+                                >
+                                    Discover more of my work
+                                </p>
+                            </div>
+                            <div
+                                class="mx-auto grid max-w-5xl gap-8 py-8 sm:grid-cols-2 lg:grid-cols-3"
+                            >
+                                {
+                                    [
+                                        {
+                                            // icon: <Mic class="h-10 w-10" />,
+                                            title: "Youtube",
+                                            description:
+                                                "Character voices that bring your stories to life with personality and pizzazz!",
+                                            color: "from-purple-500 to-purple-300",
+                                            link: "https://www.youtube.com/@gicchi",
+                                        },
+                                        {
+                                            // icon: <Music class="h-10 w-10" />,
+                                            title: "Instagram",
+                                            description:
+                                                "Singing that hits all the right notes and makes hearts skip a beat!",
+                                            color: "from-pink-500 to-pink-300",
+                                            link: "https://www.instagram.com/gicchi46/",
+                                        },
+                                        {
+                                            // icon: <Radio class="h-10 w-10" />,
+                                            title: "Trakteer",
+                                            description:
+                                                "Voices that sell, tell, and compel with style and charm!",
+                                            color: "from-purple-500 to-pink-300",
+                                            link: "https://trakteer.id/gicchi",
+                                        },
+                                    ].map((service, i) => (
+                                        <a
+                                            class="flex flex-col items-center space-y-4 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                                            style={{
+                                                background:
+                                                    "rgba(255, 255, 255, 0.8)",
+                                                backdropFilter: "blur(10px)",
+                                                border: "2px solid rgba(255, 255, 255, 0.5)",
+                                            }}
+                                            href={service.link}
+                                            target="_blank"
+                                        >
+                                            <div
+                                                class={`rounded-full bg-gradient-to-r ${service.color} p-5 shadow-lg`}
+                                            >
+                                                {/* {service.icon} */}
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-amber-800">
+                                                {service.title}
+                                            </h3>
+                                            <p class="text-center text-amber-900/70">
+                                                {service.description}
+                                            </p>
+                                        </a>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Portfolio Section */}
+                    <section
+                        id="portfolio"
+                        class="w-full py-16 md:py-12 lg:py-16"
+                    >
+                        <div class="container mx-auto px-4 md:px-6">
+                            <div
+                                class="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+                            >
+                                <h2
+                                    class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r to-amber-300 from-orange-500"
+                                >
+                                    Work with me
+                                </h2>
+                                <p
+                                    class="max-w-[700px] text-amber-900/70 text-xl"
+                                >
+                                    Indonesian, Japanese, or English voice over
+                                    and covers
+                                </p>
+                            </div>
+                            <div class="mx-auto grid max-w-6xl gap-8 py-8">
+                                <a
+                                    href="https://www.fiverr.com/brigittaputeri"
+                                    target="_blank"
+                                >
+                                    Fiverr
+                                </a>
+                            </div>
+                            {
+                                // <div class="flex justify-center mt-12">
+                                //     <button
+                                //         class="rounded-full border-2 border-purple-400 hover:border-purple-600 hover:bg-purple-100 transition-all duration-300 hover:-translate-y-1"
+                                //     >
+                                //         <!-- <Sparkles class="mr-2 h-5 w-5" /> -->
+                                //         See All My Magic
+                                //     </button>
+                                // </div>
+                            }
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
